@@ -1,0 +1,162 @@
+---
+title: "rmarkdown-and-leaflet"
+author: "Hiroshi Kamijo"
+date: "`r format(Sys.time(), '%Y/%m/%d')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+In this page, I created Japan map with Leaflet. I chose Tokyo, Oosaka, Hokkaido(Sapporo), and so on.
+
+```{r, echo=FALSE}
+library(leaflet)
+library(dplyr)
+```
+
+## All over Japan
+'Japanese origin of longitude and latitude are 
+139 degrees east longitude and 
+35 degrees north latitude. So I decided the center of Japanese map.
+
+```{r, echo=TRUE}
+dt <- data.frame(
+                city = c('Japanese origin', "Oosaka", "Sapporo", "Naha", "Hakata"),
+                lng = c(139, 135.5, 141, 127, 130),
+                lat = c(35, 34.6, 43, 26, 33),
+                col = c("red", "blue", "green", "lightgreen", "orange")
+                )
+
+dt$popup <- with(dt, paste("<b>", city, "</b>"))
+
+markers <- awesomeIcons(
+    icon='map-marker',
+    iconColor = 'black',
+    markerColor = dt$col,
+    library='fa')
+
+m <- leaflet(data = dt, width = "100%" ) %>%
+    addTiles() %>%  # Add default OpenStreetMap map tiles
+    addAwesomeMarkers(
+        lng = ~lng, 
+        lat = ~lat, 
+        popup = ~popup,
+        icon = markers
+    ) %>%
+    addLegend(
+        position='topright',
+        colors= c("red", "blue", "green", "lightgreen", "orange"),
+        labels= dt$city,
+        opacity = 0.75,
+        title="Legend"
+        )
+
+m  # Show map
+```
+
+
+## Japanese origin
+
+```{r, echo=TRUE}
+dt <- data.frame(
+                city = c('Japanese origin'),
+                lng = c(135.5),
+                lat = c(35),
+                col = c("red")
+                )
+
+dt$popup <- with(dt, paste("<b>", city, "</b>"))
+
+m <- leaflet(data = dt, width = "100%" ) %>%
+    addTiles() %>%  # Add default OpenStreetMap map tiles
+    addAwesomeMarkers(
+        lng = ~lng, 
+        lat = ~lat, 
+        popup = ~popup,
+        icon = markers
+    ) %>%
+    addLegend(
+        position='topright',
+        colors= c("red"),
+        labels= dt$city,
+        opacity = 0.75,
+        title="Legend"
+        )
+
+m  # Show map
+```
+
+
+## Oosaka
+
+```{r, echo=TRUE}
+dt <- data.frame(
+                city = c('Oosaka'),
+                lng = c(135.5),
+                lat = c(34.6),
+                col = c("blue")
+                )
+
+dt$popup <- with(dt, paste("<b>", city, "</b>"))
+
+markers <- awesomeIcons(
+    icon='map-marker',
+    iconColor = 'black',
+    markerColor = dt$col,
+    library='fa')
+
+m <- leaflet(data = dt, width = "100%" ) %>%
+    addTiles() %>%  # Add default OpenStreetMap map tiles
+    addAwesomeMarkers(
+        lng = ~lng, 
+        lat = ~lat, 
+        popup = ~popup,
+        icon = markers
+    ) %>%
+    addLegend(
+        position='topright',
+        colors= c("blue"),
+        labels= dt$city,
+        opacity = 0.75,
+        title="Legend"
+        )
+
+m  # Show map
+```
+
+
+## Hakata
+
+
+```{r, echo=TRUE}
+dt <- data.frame(
+                city = c("Hakata"),
+                lng = c(130),
+                lat = c(33),
+                col = c("orange")
+                )
+
+dt$popup <- with(dt, paste("<b>", city, "</b>"))
+
+m <- leaflet(data = dt, width = "100%" ) %>%
+    addTiles() %>%  # Add default OpenStreetMap map tiles
+    addAwesomeMarkers(
+        lng = ~lng, 
+        lat = ~lat, 
+        popup = ~popup,
+        icon = markers
+    ) %>%
+    addLegend(
+        position='topright',
+        colors= c("orange"),
+        labels= dt$city,
+        opacity = 0.75,
+        title="Legend"
+        )
+
+m  # Show map
+```
